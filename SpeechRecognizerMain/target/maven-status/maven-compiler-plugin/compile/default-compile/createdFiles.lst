@@ -1,0 +1,5 @@
+com\voice\speechrecognizermain\GrammarGenerator.class
+com\voice\speechrecognizermain\VoiceAssistantApi.class
+temp\CommandHandler.class
+com\voice\speechrecognizermain\GrammarController.class
+com\voice\speechrecognizermain\VoiceAssistantBuilder.class

@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.voice.speechrecognizermain","l":"GrammarController"},{"p":"com.voice.speechrecognizermain","l":"GrammarGenerator"},{"p":"com.voice.speechrecognizermain","l":"VoiceAssistantApi"},{"p":"com.voice.speechrecognizermain","l":"VoiceAssistantBuilder"}];updateSearchResults();

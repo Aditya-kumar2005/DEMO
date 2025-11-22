@@ -1,0 +1,3 @@
+ body { font-family: sans-serif; padding: 2em; background: #f4f4f4; }
+    button, input { padding: 0.6em; font-size: 1em; margin-top: 1em; }
+    #status, #suggestStatus, #approveStatus { margin-top: 1em; white-space: pre-wrap; }

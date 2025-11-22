@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Voice Assistant Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🎙️ Voice Assistant Builder</h1>
+
+  <button onclick="generate()">Generate Grammar & Dictionary</button>
+  <div id="status"></div>
+
+  <h2>🗣️ Available Commands</h2>
+  <ul id="commandList"></ul>
+
+  <h2>💡 Suggest a New Command</h2>
+  <input type="text" id="suggestInput" placeholder="e.g., open calculator" style="width: 60%;">
+  <button onclick="submitSuggestion()">Submit</button>
+  <div id="suggestStatus"></div>
+
+  <h2>✅ Approve Suggested Command</h2>
+  <input type="text" id="approveInput" placeholder="e.g., open calculator" style="width: 60%;">
+  <button onclick="approveCommand()">Approve</button>
+  <div id="approveStatus"></div>
+
+<script> 
+    async function generate() {
+      document.getElementById("status").textContent = "⏳ Generating...";
+      try {
+        const response = await fetch("/api/generate", { method: "POST" });
+        const text = await response.text();
+        document.getElementById("status").textContent = text;
+        loadCommands();
+      } catch (err) {
+        document.getElementById("status").textContent = "❌ Error: " + err;
+      }
+    }
+
+    async function loadCommands() {
+      try {
+        const res = await fetch("/api/commands");
+        const commands = await res.json();
+        const list = document.getElementById("commandList");
+        list.innerHTML = "";
+        commands.forEach(cmd => {
+          const li = document.createElement("li");
+          li.textContent = cmd;
+          list.appendChild(li);
+        });
+      } catch (err) {
+        document.getElementById("commandList").innerHTML = "<li>❌ Failed to load commands.</li>";
+      }
+    }
+
+    async function submitSuggestion() {
+      const input = document.getElementById("suggestInput");
+      const status = document.getElementById("suggestStatus");
+      const command = input.value.trim();
+
+      if (!command) {
+        status.textContent = "❌ Please enter a command.";
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/suggest", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ command })
+        });
+        const text = await res.text();
+        status.textContent = text;
+        input.value = "";
+      } catch (err) {
+        status.textContent = "❌ Error: " + err;
+      }
+    }
+
+    async function approveCommand() {
+      const input = document.getElementById("approveInput");
+      const status = document.getElementById("approveStatus");
+      const command = input.value.trim();
+
+      if (!command) {
+        status.textContent = "❌ Please enter a command.";
+        return;
+      }
+
+      try {
+        const res = await fetch("/api/approve", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ command })
+        });
+        const text = await res.text();
+        status.textContent = text;
+        input.value = "";
+        loadCommands();
+      } catch (err) {
+        status.textContent = "❌ Error: " + err;
+      }
+    }
+
+    loadCommands();
+  </script>
+  
+</body>
+</html>
